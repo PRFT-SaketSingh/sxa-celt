@@ -1,7 +1,8 @@
 const config = require(global.rootPath + '/gulp/config');
+const path = require('path');
 const request = require('request');
 const fs = require('fs');
-const getServerUrl = require('./getServerUrl.js')
+
 function scribanFileFilter(name) {
     return /(\.(scriban)$)/i.test(name);
 };
@@ -49,19 +50,22 @@ function getMetadata() {
     return { "siteId": "" }
 }
 
-module.exports = async function (file) {
-    var serverUrl;
-    if (global.resolvedUrl) {
-        serverUrl = global.resolvedUrl
-    } else {
-        serverUrl = await getServerUrl()
-    }
+module.exports = function (file) {
     var conf = config.serverOptions,
         prom = new Promise((resolve, reject) => {
             setTimeout(function () {
                 resolve();
             }, 600);
-            let url = `${serverUrl}${conf.updateScribanPath}?user=${encodeURIComponent(config.user.login)}&password=${encodeURIComponent(config.user.password)}&path=${file.path}`;
+
+            let url = [conf.server,
+            conf.updateScribanPath,
+                '?user=',
+            config.user.login,
+                '&password=',
+            config.user.password,
+                '&path=',
+            file.path
+            ].join('');
             var formData = {
                 streams: JSON.stringify(getPayload(file)),
                 metadata: JSON.stringify(getMetadata())

@@ -1,11 +1,9 @@
-const getServerUrl = require('../util/getServerUrl');
-module.exports = async function login() {
-    global.resolvedUrl = await getServerUrl();
+module.exports = function login() {
     const config = require(global.rootPath + '/gulp/config'),
         inquirer = require('inquirer'),
         loginPromise = new Promise((resolve, reject) => {
             //if already entered credentials
-            if (typeof global.user !== 'undefined') {
+            if (typeof global.user!=='undefined') {
                 config.user = global.user
                 return resolve(global.user);
             }

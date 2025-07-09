@@ -1,19 +1,29 @@
 const config = require(global.rootPath + '/gulp/config');
 const path = require('path');
 const request = require('request');
-const getServerUrl = require('./getServerUrl.js')
-module.exports = async function (file) {
-    var serverUrl;
-    if (global.resolvedUrl) {
-        serverUrl = global.resolvedUrl
-    } else {
-        serverUrl = await getServerUrl()
-    }
+const colors = require('colors');
+
+module.exports = function (file) {
     let conf = config.serverOptions,
         name = path.basename(file.path),
         dirName = path.dirname(file.path),
         relativePath = path.relative(global.rootPath, dirName),
-        url = `${serverUrl}${conf.removeScriptPath}?user=${encodeURIComponent(config.user.login)}&password=${encodeURIComponent(config.user.password)}&path=${conf.projectPath}${conf.themePath}/${relativePath}/${name}&database=master`;
+        url = [
+            conf.server,
+            conf.removeScriptPath,
+            '?user=',
+            config.user.login,
+            '&password=',
+            config.user.password,
+            '&path=',
+            conf.projectPath,
+            conf.themePath,
+            '/',
+            relativePath,
+            '/',
+            name,
+            '&database=master'
+        ].join('');
     setTimeout(function () {
         request.get({
             url: url,

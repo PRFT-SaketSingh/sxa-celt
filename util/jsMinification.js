@@ -3,17 +3,17 @@ const gulpConcat = require('gulp-concat');
 const gulpSourcemaps = require('gulp-sourcemaps');
 const gulpif = require('gulp-if');
 const gulpUglify = require('gulp-uglify-es').default;
-const rollup = require('gulp-best-rollup-2');
+const rollup = require('gulp-better-rollup')
 const gulpIf = require('gulp-if');
 const { babel } = require('@rollup/plugin-babel');
 const commonjs = require('@rollup/plugin-commonjs');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
-const builtins = require('rollup-plugin-node-builtins');
 //
 const config = require(global.rootPath + '/gulp/config');
 
 const logError = err => {
     const { name: errorName, id: filename, message } = err;
+
     console.error(('Error: ' + errorName).yellow);
     console.error('File:', filename);
     console.error('Message:', message)
@@ -34,12 +34,13 @@ module.exports = function (cb) {
         return cb();
     }
     let streamSource = conf.minificationPath.concat(['!' + conf.jsOptimiserFilePath + conf.jsOptimiserFileName])
+
     var stream = gulp
         .src(streamSource)
         .pipe(gulpIf(function () {
             return conf.es6Support;
         }, rollup({
-            onwarn: () => { },
+            onwarn: () => {},
             plugins: [
                 babel({
                     babelHelpers: 'runtime',
@@ -51,8 +52,7 @@ module.exports = function (cb) {
                     ]
                 }),
                 commonjs(),
-                nodeResolve(),
-                builtins()
+                nodeResolve()
             ]
         }, 'iife').on('error', logError)).on('error', logErrorTaskStatus))
         .pipe(gulpIf(function () {
@@ -63,11 +63,7 @@ module.exports = function (cb) {
         .on('error', logErrorTaskStatus)
         .pipe(gulpif(function () {
             return conf.jsSourceMap;
-        }, gulpSourcemaps.write('./', {
-            mapFile: function (mapFilePath) {
-                return mapFilePath.replace('.js.map', '-js.map')
-            }
-        })))
+        }, gulpSourcemaps.write('./')))
         .pipe(gulp.dest('scripts'));
 
     stream.on('end', function () {

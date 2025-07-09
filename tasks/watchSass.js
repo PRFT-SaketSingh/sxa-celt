@@ -1,11 +1,12 @@
 const gulp = require('gulp');
-const sass = require('gulp-sass')(require('node-sass'));
+const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
 const rename = require('gulp-rename');
 const autoprefixer = require('gulp-autoprefixer');
 const path = require('path');
 const bulkSass = require('gulp-sass-bulk-import');
 const gulpif = require('gulp-if');
+const colors = require('colors');
 const vinyl = require('vinyl-file');
 //
 const destPath = require('../util/destPath');

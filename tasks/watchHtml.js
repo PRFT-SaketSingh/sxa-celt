@@ -1,6 +1,8 @@
 const gulp = require('gulp');
+const colors = require('colors');
 const vinyl = require('vinyl-file');
 const fs = require('fs');
+const path = require('path');
 //
 const config = require(global.rootPath + '/gulp/config');
 const { fileActionResolver } = require('../util/fileActionResolver');

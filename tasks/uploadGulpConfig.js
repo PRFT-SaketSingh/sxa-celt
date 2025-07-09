@@ -1,4 +1,8 @@
 const gulp = require('gulp');
+const eslint = require('gulp-eslint');
+const colors = require('colors');
+const vinyl = require('vinyl-file');
+const { EventEmitter } = require('events');
 //
 const config = require(global.rootPath + '/gulp/config');
 const { fileActionResolver } = require('../util/fileActionResolver');

@@ -1,4 +1,7 @@
 const gulp = require('gulp');
+const eslint = require('gulp-eslint');
+const colors = require('colors');
+const vinyl = require('vinyl-file');
 const tap = require('gulp-tap');
 //
 const config = require(global.rootPath + '/gulp/config');

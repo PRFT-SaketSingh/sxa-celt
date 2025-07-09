@@ -2,24 +2,28 @@ const config = require(global.rootPath + '/gulp/config');
 const path = require('path');
 const request = require('request');
 const fs = require('fs');
-const getServerUrl = require('./getServerUrl.js')
-module.exports = async function (file) {
-    var serverUrl;
-    if (global.resolvedUrl) {
-        serverUrl = global.resolvedUrl
-    } else {
-        serverUrl = await getServerUrl()
-    }
+const colors = require('colors');
+
+module.exports = function (file) {
     let conf = config.serverOptions,
         name = path.basename(file.path),
         dirName = path.dirname(file.path),
+        relativePath = path.relative(global.rootPath, dirName),
         prom = new Promise((resolve, reject) => {
             setTimeout(function () {
                 resolve();
             }, 600);
-            let url = `${serverUrl}${conf.updateTemplatePath}?user=${encodeURIComponent(config.user.login)}&password=${encodeURIComponent(config.user.password)}&path=${name}`;
+            let url = [conf.server,
+            conf.updateTemplatePath,
+                '?user=',
+            config.user.login,
+                '&password=',
+            config.user.password,
+                '&path=',
+                name
+            ].join('');
             var formData = {
-                file: fs.createReadStream(dirName + '/' + name),
+                file: fs.createReadStream(relativePath + '/' + name),
             };
             var a = request.post({
                 url: url,

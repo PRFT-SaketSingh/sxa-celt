@@ -1,5 +1,6 @@
 const path = require('path');
 const config = require(global.rootPath + '/gulp/config');
+const colors = require('colors');
 
 var testPath = function(element, filePath) {
     var res = false;

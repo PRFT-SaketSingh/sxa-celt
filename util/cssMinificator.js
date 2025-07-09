@@ -24,12 +24,7 @@ module.exports = function (cb) {
         .pipe(gulpConcat(conf.cssOptimiserFileName))
         .pipe(gulpif(function () {
             return conf.cssSourceMap;
-        }, gulpSourcemaps.write('./', {
-            mapFile: function (mapFilePath) {
-                // source map files are named *.map instead of *.css.map
-                return mapFilePath.replace('.css.map', '-css.map');
-            }
-        })))
+        }, gulpSourcemaps.write('./')))
         .pipe(gulp.dest('styles'));
     stream.on('end', function () {
         console.log('Css minification done'.grey)

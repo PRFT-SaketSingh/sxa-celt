@@ -1,4 +1,5 @@
 const gulp = require('gulp');
+const colors = require('colors');
 const vinyl = require('vinyl-file');
 //
 const config = require(global.rootPath + '/gulp/config');

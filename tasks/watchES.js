@@ -1,4 +1,5 @@
 const gulp = require("gulp");
+const colors = require("colors");
 const babel = require("gulp-babel");
 const config = require(global.rootPath + '/gulp/config');
 const { fileActionResolver } = require("../util/fileActionResolver");
